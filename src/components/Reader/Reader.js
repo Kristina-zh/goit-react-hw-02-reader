@@ -21,21 +21,17 @@ export default class Reader extends Component {
 
   onIncrement = () => {
     this.setState(prevState => {
-      if (prevState.count < this.props.items.length) {
-        return {
-          count: prevState.count + 1,
-        };
-      }
+      return {
+        count: prevState.count + 1,
+      };
     });
   };
 
   onDecrement = () => {
     this.setState(prevState => {
-      if (prevState.count > 0) {
-        return {
-          count: prevState.count - 1,
-        };
-      }
+      return {
+        count: prevState.count - 1,
+      };
     });
   };
 
