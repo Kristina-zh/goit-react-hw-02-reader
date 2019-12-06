@@ -5,10 +5,6 @@ import Counter from './Counter/Counter';
 import Publication from './Publication/Publication';
 
 export default class Reader extends Component {
-  state = {
-    count: 0,
-  };
-
   static propTypes = {
     items: PropTypes.arrayOf(
       PropTypes.shape({
@@ -19,25 +15,40 @@ export default class Reader extends Component {
     ).isRequired,
   };
 
+  componentDidMount() {
+    const { location, history } = this.props;
+    const item = new URLSearchParams(location.search).get('item');
+
+    if (!item) {
+      history.replace({
+        pathname: '/',
+        search: `item=1`,
+      });
+    }
+  }
+
   onIncrement = () => {
-    this.setState(prevState => {
-      return {
-        count: prevState.count + 1,
-      };
+    const { location, history } = this.props;
+    const item = Number(new URLSearchParams(location.search).get('item'));
+    history.replace({
+      pathname: location.pathname,
+      search: `item=${item + 1}`,
     });
   };
 
   onDecrement = () => {
-    this.setState(prevState => {
-      return {
-        count: prevState.count - 1,
-      };
+    const { location, history } = this.props;
+    const item = Number(new URLSearchParams(location.search).get('item'));
+    history.replace({
+      pathname: location.pathname,
+      search: `item=${item - 1}`,
     });
   };
 
   render() {
-    const { count } = this.state;
-    const { items } = this.props;
+    const { items, location } = this.props;
+    const item = Number(new URLSearchParams(location.search).get('item')) || 1;
+    const count = item - 1;
     const max = items.length;
     const notActiveNext = count === items.length - 1;
     const notActivePrev = count === 0;
