@@ -16,10 +16,10 @@ export default class Reader extends Component {
   };
 
   componentDidMount() {
-    const { location, history } = this.props;
+    const { location, history, items } = this.props;
     const item = new URLSearchParams(location.search).get('item');
 
-    if (!item) {
+    if (!item || +item > items.length) {
       history.replace({
         pathname: '/',
         search: `item=1`,
@@ -47,7 +47,8 @@ export default class Reader extends Component {
 
   render() {
     const { items, location } = this.props;
-    const item = Number(new URLSearchParams(location.search).get('item')) || 1;
+    const i = Number(new URLSearchParams(location.search).get('item'));
+    const item = (i && i <= items.length) || 1;
     const count = item - 1;
     const max = items.length;
     const notActiveNext = count === items.length - 1;
